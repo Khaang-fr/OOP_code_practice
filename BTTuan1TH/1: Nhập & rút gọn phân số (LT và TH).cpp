@@ -1,10 +1,12 @@
 #include <iostream> 
 using namespace std;
 
+//Tạo struct phân số
 struct PhanSo{
     int tu, mau;
 };
 
+//Tạo hàm trả về ước chung lớn nhất
 int GCD(int a, int b) {
     while (b != 0) {
         int r = a % b;
