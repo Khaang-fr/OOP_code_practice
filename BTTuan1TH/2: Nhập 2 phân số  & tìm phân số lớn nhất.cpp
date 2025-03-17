@@ -33,13 +33,13 @@ int main () {
     do {
        cin >> a.tu >> a.mau >> b.tu >> b.mau;
     } while (a.mau == 0 || b.mau==0);
-    a = Rutgon(a);
-    b = Rutgon(b);
-
-    if (a.tu/a.mau > b.tu/b.mau) {              //Kiểm tra số lớn hơn
+    
+    if (a.tu/a.mau > b.tu/b.mau) {                 // Kiểm tra phân số lớn hơn
+        a = Rutgon(a);
         if (a.mau == 1) cout << a.tu;
         else cout << a.tu << "/" << a.mau;
     } else {
+        b = Rutgon(b);
         if (b.mau == 1) cout << b.tu;
         else cout << b.tu << "/" << b.mau;
     }
