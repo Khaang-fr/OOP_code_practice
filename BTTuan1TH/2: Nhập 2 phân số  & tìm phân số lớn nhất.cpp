@@ -1,10 +1,12 @@
 #include <iostream> 
 using namespace std;
 
+//Tạo struct phân số
 struct PhanSo{
     int tu, mau;
 };
 
+//Tạo hàm trả về ước chung lớn nhất
 int GCD(int a, int b) {
     while (b != 0) {
         int r = a % b;
@@ -14,6 +16,7 @@ int GCD(int a, int b) {
     return a;
 }
 
+//Tạo hàm trả về phân số đã được rút gọn
 PhanSo Rutgon(PhanSo a) {
     int gcd = GCD(a.tu, a.mau);
     a.tu /= gcd;
@@ -32,7 +35,8 @@ int main () {
     } while (a.mau == 0 || b.mau==0);
     a = Rutgon(a);
     b = Rutgon(b);
-    if (a.tu/a.mau > b.tu/b.mau) {
+
+    if (a.tu/a.mau > b.tu/b.mau) {              //Kiểm tra số lớn hơn
         if (a.mau == 1) cout << a.tu;
         else cout << a.tu << "/" << a.mau;
     } else {
