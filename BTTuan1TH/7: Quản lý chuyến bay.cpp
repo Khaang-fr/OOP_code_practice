@@ -127,19 +127,20 @@ void ChuyenBay::xuat() {
 }
 
 void ChuyenBay::TimKiemChuyenBay(ChuyenBay cb[], int n) {
-    string maChuyenBay;
-    cout << "Nhap ma chuyen bay can tim: ";
-    getline(cin, maChuyenBay);
+    string keyword;
+    cout << "Nhap ma chuyen bay hoac san bay di hoac san bay den can tim: ";
+    getline(cin, keyword);
+    
     bool found = false;
     for (int i = 0; i < n; i++) {
-        if (cb[i].maChuyenBay == maChuyenBay) {
-            cout << "Chuyen bay can tim la: ";
+        if (cb[i].maChuyenBay == keyword || cb[i].sanBayDi == keyword || cb[i].sanBayDen == keyword) {
+            cout << "Chuyen bay tim thay: " << endl;
             cb[i].xuat();
             found = true;
         }
     }
     if (!found) {
-        cout << "Khong tim thay chuyen bay co ma " << maChuyenBay << endl;
+        cout << "Khong tim thay chuyen bay nao phu hop voi tu khoa \"" << keyword << "\"." << endl;
     }
 }
 
@@ -204,8 +205,6 @@ void ChuyenBay::soChuyenBayTuSanBay(ChuyenBay cb[], int n) {
 }
 
 int main() {
-    freopen("input.txt", "r", stdin);
-
     int n; cin >> n;
     cin.ignore();
     ChuyenBay *cb = new ChuyenBay[n];
@@ -223,6 +222,5 @@ int main() {
     cout << endl;
     cb[0].soChuyenBayTuSanBay(cb, n);
     delete[] cb;
-    fclose(stdin);
     return 0;
 }
