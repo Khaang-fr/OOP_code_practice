@@ -15,7 +15,6 @@ double Sin(double x, double accuracy) {
         term *= -x * x / ((2 * n) * (2 * n + 1));
         res += term;
         n++;
-        // Đảm bảo không bị lặp vô hạn
         if (n > 100) break;
     }
     return res;
