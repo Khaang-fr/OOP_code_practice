@@ -1,12 +1,10 @@
 #include <iostream> 
 using namespace std;
 
-//Tạo struct phân số
 struct PhanSo{
     int tu, mau;
 };
 
-//Tạo hàm trả về ước chung lớn nhất
 int GCD(int a, int b) {
     while (b != 0) {
         int r = a % b;
@@ -16,8 +14,7 @@ int GCD(int a, int b) {
     return a;
 }
 
-//Tạo hàm trả về phân số đã được rút gọn
-PhanSo Rutgon(PhanSo a) {
+PhanSo Rutgon(PhanSo a) {    
     int gcd = GCD(a.tu, a.mau);
     a.tu /= gcd;
     a.mau /= gcd;
@@ -28,13 +25,26 @@ PhanSo Rutgon(PhanSo a) {
     return a;
 }
 
+// So sánh hai phân số
+bool LonHon(PhanSo a, PhanSo b) {
+    // Chuyển về cùng mẫu số để so sánh
+    long long tuso1 = (long long)a.tu * b.mau;
+    long long tuso2 = (long long)b.tu * a.mau;
+    
+    // Nếu một mẫu số âm, kết quả so sánh sẽ bị đảo ngược
+    if ((a.mau < 0 && b.mau > 0) || (a.mau > 0 && b.mau < 0))
+        return tuso1 < tuso2;
+    
+    return tuso1 > tuso2;
+}
+
 int main () {
     PhanSo a, b;   
     do {
        cin >> a.tu >> a.mau >> b.tu >> b.mau;
-    } while (a.mau == 0 || b.mau==0);
+    } while (a.mau == 0 || b.mau == 0);
     
-    if (a.tu/a.mau > b.tu/b.mau) {                 // Kiểm tra phân số lớn hơn
+    if (LonHon(a, b)) {
         a = Rutgon(a);
         if (a.mau == 1) cout << a.tu;
         else cout << a.tu << "/" << a.mau;
