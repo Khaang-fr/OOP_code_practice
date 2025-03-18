@@ -1,6 +1,5 @@
 #include <iostream>
 #include <cmath>
-#include <iomanip>
 using namespace std;
 
 double Sin(double x, double accuracy) {
@@ -26,6 +25,6 @@ int main() {
     double x;
     cin >> x;
     double result = Sin(x, 0.00001);
-    cout << fixed << setprecision(5) << result << endl;
+    cout << result << endl;
     return 0;
 }
