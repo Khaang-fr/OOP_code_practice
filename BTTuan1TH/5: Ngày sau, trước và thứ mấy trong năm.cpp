@@ -81,15 +81,14 @@ int ngayThu (Date date) {
 }
 
 int main() {
-    Date date;
-    cin >> date.day >> date.month >> date.year;
-    if (SoNgayCuaThang(date.month, date.year) == -1) {
-        return 0; 
-    }
+	Date date;
+	cin >> date.day >> date.month >> date.year;
+	if (SoNgayCuaThang(date.month, date.year) == -1) {
+	    return 0; 
+    	}
     
-    Date ngayTiepTheo = NgayTiepTheo(date);
-    cout << ngayTiepTheo.day << "/" << ngayTiepTheo.month << "/" << ngayTiepTheo.year << endl;
-
+	Date ngayTiepTheo = NgayTiepTheo(date);
+	cout << ngayTiepTheo.day << "/" << ngayTiepTheo.month << "/" << ngayTiepTheo.year << endl;
 	Date ngayTruocDo = ngayTruoc(date);
 	cout << ngayTruocDo.day << "/" << ngayTruocDo.month << "/" << ngayTruocDo.year << endl;
 
