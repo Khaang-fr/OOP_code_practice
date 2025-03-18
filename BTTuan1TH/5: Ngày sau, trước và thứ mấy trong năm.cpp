@@ -71,6 +71,22 @@ Date ngayTruoc (Date date) {
 	return date;
 }
 
+bool realDay(int day, int month, int year) {
+    if (year < 0) return false;
+    if (month < 1 || month > 12) return false;
+    if (day < 1) return false;
+    if (month == 2) {
+        if (year % 400 == 0 || (year % 4 == 0 && year % 100 != 0)) {
+            return day <= 29;
+        }
+        return day <= 28;
+    }
+    if (month == 4 || month == 6 || month == 9 || month == 11) {
+        return day <= 30;
+    }
+    return day <= 31;
+}
+
 int ngayThu (Date date) {
 	int ngay = 0;
 	for (int i = 1; i < date.month; i++) {
@@ -82,7 +98,9 @@ int ngayThu (Date date) {
 
 int main() {
 	Date date;
-	cin >> date.day >> date.month >> date.year;
+	while (!realDay(date)) {
+		cin >> date.ngay >> date.thang >> date.nam;
+	}
 	if (SoNgayCuaThang(date.month, date.year) == -1) {
 	    return 0; 
     	}
