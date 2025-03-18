@@ -5,6 +5,7 @@ struct PhanSo{
     int tu, mau;
 };
 
+//Phép cộng hai phân 
 PhanSo operator+(PhanSo a, PhanSo b) {
     PhanSo c;
     c.tu = a.tu * b.mau + b.tu * a.mau;
@@ -12,6 +13,7 @@ PhanSo operator+(PhanSo a, PhanSo b) {
     return c;
 }
 
+//Phép trừ hai phân số
 PhanSo operator-(PhanSo a, PhanSo b) {
     PhanSo c;
     c.tu = a.tu * b.mau - b.tu * a.mau;
@@ -19,6 +21,7 @@ PhanSo operator-(PhanSo a, PhanSo b) {
     return c;
 }
 
+//Phép nhân hai phân số
 PhanSo operator*(PhanSo a, PhanSo b) {
     PhanSo c;
     c.tu = a.tu * b.tu;
@@ -26,6 +29,7 @@ PhanSo operator*(PhanSo a, PhanSo b) {
     return c;
 }
 
+//Phéo chia hai phân số
 PhanSo operator/(PhanSo a, PhanSo b) {
     PhanSo c;
     c.tu = a.tu * b.mau;
