@@ -47,6 +47,14 @@ int GCD(int a, int b) {
 }
 
 PhanSo Rutgon(PhanSo a) {
+    if (a.tu == 0) {
+        a.mau = 1;
+        return a;
+    }
+    // Nếu mẫu số bằng 0, trả về lỗi
+    if (a.mau == 0) {
+        return a; // Không thể rút gọn
+    }
     int gcd = GCD(a.tu, a.mau);
     a.tu /= gcd;
     a.mau /= gcd;
@@ -79,6 +87,10 @@ int main () {
     if (e.mau == 1) cout << e.tu;
     else cout << e.tu << "/" << e.mau;
     cout << endl;
+    if (b.tu==0) {
+        cout << "Khong the chia";
+        return 0;
+    }
     if (f.mau == 1) cout << f.tu;
     else cout << f.tu << "/" << f.mau;
     return 0;
