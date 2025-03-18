@@ -98,12 +98,12 @@ int ngayThu (Date date) {
 
 int main() {
 	Date date;
-	while (!realDay(date)) {
-		cin >> date.ngay >> date.thang >> date.nam;
-	}
+	do {
+		cin >> date.day >> date.month >> date.year;
+	} while (!realDay(date.day, date.month, date.year));
 	if (SoNgayCuaThang(date.month, date.year) == -1) {
 	    return 0; 
-    	}
+    }
     
 	Date ngayTiepTheo = NgayTiepTheo(date);
 	cout << ngayTiepTheo.day << "/" << ngayTiepTheo.month << "/" << ngayTiepTheo.year << endl;
