@@ -219,14 +219,6 @@ void SoTietKiem::xuat() {
     cout << "Tien hien tai: " << tienHienTai << endl;
 }
 
-void SoTietKiem::CapNhatLaiSuat() {
-    if (noLongerThan6Months(ngayMoSo, ngayHienTai)) {
-        loaiTietKiem = "Ngan han";
-    } else {
-        loaiTietKiem = "Dai han";
-    }
-}
-
 void SoTietKiem::TinhToanTienHienTai(float laiSuatNganHan, float laiSuatDaiHan) {
     if (loaiTietKiem == "Ngan han") {
         tienHienTai = soTienGui + soTienGui * (1 + laiSuatNganHan/100) * DaysCounter(ngayMoSo, ngayHienTai) / 365;
@@ -247,7 +239,7 @@ void SoTietKiem::RutTien(SoTietKiem stk[], int n, string maSo, double soTienRut,
             float laiSuatApDung = (stk[i].loaiTietKiem == "Ngan han") ? laiSuatNganHan : laiSuatDaiHan;
             bool isEarlyWithdrawal = false;
             
-            if (!noLongerThan6Months(stk[i].ngayMoSo, stk[i].ngayHienTai)) {
+            if (noLongerThan6Months(stk[i].ngayMoSo, stk[i].ngayHienTai)) {
                 if (stk[i].loaiTietKiem == "Dai han") {
                     isEarlyWithdrawal = true;
                     cout << "CANH BAO: Rut tien truoc thoi han (chua du 6 thang)." << endl;
@@ -397,11 +389,7 @@ int main() {
     cout << "\nNhap lai suat ngan han: ";
     cin >> laiSuatNganHan;
     cout << "Nhap lai suat dai han: ";
-    cin >> laiSuatDaiHan;
-    for (int i = 0; i < n; i++) {
-        stk[i].CapNhatLaiSuat();
-    }
-    
+    cin >> laiSuatDaiHan;    
     for (int i = 0; i < n; i++) {
         stk[i].TinhToanTienHienTai(laiSuatNganHan, laiSuatDaiHan);
     }
