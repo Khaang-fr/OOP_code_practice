@@ -2,34 +2,67 @@
 #include <vector>
 #include <string>
 #include <cmath>
-#include <algorithm>
+#include <sstream>
+#include <iomanip>
 
 using namespace std;
 
 class Polynomial {
 private:
-    vector<double> coefficients;
+    vector<double> coefficients; // Index 0 is constant term, 1 is x, 2 is x^2, etc.
+
+    // Format number to remove trailing zeros
+    string formatNumber(double num) const {
+        // Handle integer values
+        if (floor(num) == num) {
+            return to_string(int(num));
+        }
+        
+        // Format double with precision
+        ostringstream oss;
+        oss << fixed << setprecision(10) << num;
+        string str = oss.str();
+        
+        // Remove trailing zeros
+        str.erase(str.find_last_not_of('0') + 1, string::npos);
+        
+        // Remove trailing decimal point if necessary
+        if (str.back() == '.') {
+            str.pop_back();
+        }
+        
+        return str;
+    }
 
 public:
-    Polynomial() {}
+    // Create a polynomial with specified degree or 0 degree
+    Polynomial(int degree = 0) {
+        coefficients.resize(degree + 1, 0);
+    }
+
+    // Constructor with coefficient list
     Polynomial(const vector<double>& coeffs) : coefficients(coeffs) {
         removeTrailingZeros();
     }
 
+    // Constructor with initializer list
     Polynomial(initializer_list<double> coeffs) : coefficients(coeffs) {
         removeTrailingZeros();
     }
 
+    // Remove trailing zeros
     void removeTrailingZeros() {
         while (!coefficients.empty() && coefficients.back() == 0) {
             coefficients.pop_back();
         }
     }
 
+    // Get degree of polynomial
     int degree() const {
         return coefficients.empty() ? 0 : coefficients.size() - 1;
     }
 
+    // Evaluate polynomial at value x
     double evaluate(double x) const {
         double result = 0.0;
         for (size_t i = 0; i < coefficients.size(); ++i) {
@@ -38,11 +71,29 @@ public:
         return result;
     }
 
-    double operator()(double x) const {
-        return evaluate(x);
+    // Input a polynomial
+    void input() {
+        int deg;
+        cout << "Enter the degree of the polynomial: ";
+        cin >> deg;
+        
+        coefficients.resize(deg + 1);
+        
+        for (int i = deg; i >= 0; --i) {
+            cout << "Enter coefficient for x^" << i << ": ";
+            cin >> coefficients[i];
+        }
+        
+        removeTrailingZeros();
     }
 
-    Polynomial operator+(const Polynomial& other) const {
+    // Output a polynomial
+    void output() const {
+        cout << toString() << endl;
+    }
+
+    // Addition of polynomials
+    Polynomial add(const Polynomial& other) const {
         vector<double> result = coefficients;
         result.resize(max(result.size(), other.coefficients.size()), 0);
         
@@ -54,7 +105,8 @@ public:
         return p;
     }
 
-    Polynomial operator-(const Polynomial& other) const {
+    // Subtraction of polynomials
+    Polynomial subtract(const Polynomial& other) const {
         vector<double> result = coefficients;
         result.resize(max(result.size(), other.coefficients.size()), 0);
         
@@ -66,70 +118,7 @@ public:
         return p;
     }
 
-    Polynomial operator*(double scalar) const {
-        vector<double> result(coefficients.size());
-        for (size_t i = 0; i < coefficients.size(); ++i) {
-            result[i] = coefficients[i] * scalar;
-        }
-        return Polynomial(result);
-    }
-
-    Polynomial operator*(const Polynomial& other) const {
-        if (coefficients.empty() || other.coefficients.empty()) {
-            return Polynomial();
-        }
-
-        vector<double> result(degree() + other.degree() + 1, 0);
-        
-        for (size_t i = 0; i < coefficients.size(); ++i) {
-            for (size_t j = 0; j < other.coefficients.size(); ++j) {
-                result[i + j] += coefficients[i] * other.coefficients[j];
-            }
-        }
-        
-        return Polynomial(result);
-    }
-
-    Polynomial derivative() const {
-        if (coefficients.size() <= 1) {
-            return Polynomial({0});
-        }
-        
-        vector<double> result(coefficients.size() - 1);
-        for (size_t i = 1; i < coefficients.size(); ++i) {
-            result[i - 1] = coefficients[i] * i;
-        }
-        
-        return Polynomial(result);
-    }
-
-    Polynomial integral(double C = 0) const {
-        vector<double> result(coefficients.size() + 1);
-        result[0] = C;
-        
-        for (size_t i = 0; i < coefficients.size(); ++i) {
-            result[i + 1] = coefficients[i] / (i + 1);
-        }
-        
-        return Polynomial(result);
-    }
-
-    double getCoefficient(int power) const {
-        return (power >= 0 && power < static_cast<int>(coefficients.size())) ? 
-               coefficients[power] : 0;
-    }
-
-    void setCoefficient(int power, double value) {
-        if (power < 0) return;
-        
-        if (power >= static_cast<int>(coefficients.size())) {
-            coefficients.resize(power + 1, 0);
-        }
-        
-        coefficients[power] = value;
-        removeTrailingZeros();
-    }
-
+    // String representation of the polynomial
     string toString() const {
         if (coefficients.empty()) {
             return "0";
@@ -140,7 +129,9 @@ public:
         
         for (int i = coefficients.size() - 1; i >= 0; --i) {
             if (coefficients[i] == 0) continue;
-                        if (firstTerm) {
+            
+            // Handle sign
+            if (firstTerm) {
                 if (coefficients[i] < 0) {
                     result += "-";
                 }
@@ -151,19 +142,23 @@ public:
             
             double absCoeff = abs(coefficients[i]);
             
+            // Handle coefficient and variable
             if (i == 0) {
-                result += to_string(absCoeff);
+                // Constant term
+                result += formatNumber(absCoeff);
             } else if (i == 1) {
+                // x term
                 if (absCoeff == 1) {
                     result += "x";
                 } else {
-                    result += to_string(absCoeff) + "x";
+                    result += formatNumber(absCoeff) + "x";
                 }
             } else {
+                // Higher power terms
                 if (absCoeff == 1) {
                     result += "x^" + to_string(i);
                 } else {
-                    result += to_string(absCoeff) + "x^" + to_string(i);
+                    result += formatNumber(absCoeff) + "x^" + to_string(i);
                 }
             }
         }
@@ -171,6 +166,7 @@ public:
         return result;
     }
 
+    // Friend function for output stream
     friend ostream& operator<<(ostream& os, const Polynomial& poly) {
         os << poly.toString();
         return os;
