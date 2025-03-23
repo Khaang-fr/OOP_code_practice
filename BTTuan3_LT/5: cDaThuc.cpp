@@ -2,6 +2,7 @@
 #include <vector>
 #include <string>
 #include <cmath>
+#include <algorithm>
 
 using namespace std;
 
@@ -10,10 +11,7 @@ private:
     vector<double> coefficients;
 
 public:
-    Polynomial(int degree = 0) {
-        coefficients.resize(degree + 1, 0);
-    }
-
+    Polynomial() {}
     Polynomial(const vector<double>& coeffs) : coefficients(coeffs) {
         removeTrailingZeros();
     }
@@ -40,26 +38,11 @@ public:
         return result;
     }
 
-    void input() {
-        int deg;
-        cout << "Enter the degree of the polynomial: ";
-        cin >> deg;
-        
-        coefficients.resize(deg + 1);
-        
-        for (int i = deg; i >= 0; --i) {
-            cout << "Enter coefficient for x^" << i << ": ";
-            cin >> coefficients[i];
-        }
-        
-        removeTrailingZeros();
+    double operator()(double x) const {
+        return evaluate(x);
     }
 
-    void output() const {
-        cout << toString() << endl;
-    }
-
-    Polynomial add(const Polynomial& other) const {
+    Polynomial operator+(const Polynomial& other) const {
         vector<double> result = coefficients;
         result.resize(max(result.size(), other.coefficients.size()), 0);
         
@@ -71,7 +54,7 @@ public:
         return p;
     }
 
-    Polynomial subtract(const Polynomial& other) const {
+    Polynomial operator-(const Polynomial& other) const {
         vector<double> result = coefficients;
         result.resize(max(result.size(), other.coefficients.size()), 0);
         
@@ -81,6 +64,70 @@ public:
         
         Polynomial p(result);
         return p;
+    }
+
+    Polynomial operator*(double scalar) const {
+        vector<double> result(coefficients.size());
+        for (size_t i = 0; i < coefficients.size(); ++i) {
+            result[i] = coefficients[i] * scalar;
+        }
+        return Polynomial(result);
+    }
+
+    Polynomial operator*(const Polynomial& other) const {
+        if (coefficients.empty() || other.coefficients.empty()) {
+            return Polynomial();
+        }
+
+        vector<double> result(degree() + other.degree() + 1, 0);
+        
+        for (size_t i = 0; i < coefficients.size(); ++i) {
+            for (size_t j = 0; j < other.coefficients.size(); ++j) {
+                result[i + j] += coefficients[i] * other.coefficients[j];
+            }
+        }
+        
+        return Polynomial(result);
+    }
+
+    Polynomial derivative() const {
+        if (coefficients.size() <= 1) {
+            return Polynomial({0});
+        }
+        
+        vector<double> result(coefficients.size() - 1);
+        for (size_t i = 1; i < coefficients.size(); ++i) {
+            result[i - 1] = coefficients[i] * i;
+        }
+        
+        return Polynomial(result);
+    }
+
+    Polynomial integral(double C = 0) const {
+        vector<double> result(coefficients.size() + 1);
+        result[0] = C;
+        
+        for (size_t i = 0; i < coefficients.size(); ++i) {
+            result[i + 1] = coefficients[i] / (i + 1);
+        }
+        
+        return Polynomial(result);
+    }
+
+    double getCoefficient(int power) const {
+        return (power >= 0 && power < static_cast<int>(coefficients.size())) ? 
+               coefficients[power] : 0;
+    }
+
+    void setCoefficient(int power, double value) {
+        if (power < 0) return;
+        
+        if (power >= static_cast<int>(coefficients.size())) {
+            coefficients.resize(power + 1, 0);
+        }
+        
+        coefficients[power] = value;
+        removeTrailingZeros();
     }
 
     string toString() const {
@@ -93,8 +140,7 @@ public:
         
         for (int i = coefficients.size() - 1; i >= 0; --i) {
             if (coefficients[i] == 0) continue;
-            
-            if (firstTerm) {
+                        if (firstTerm) {
                 if (coefficients[i] < 0) {
                     result += "-";
                 }
