@@ -7,171 +7,143 @@
 
 using namespace std;
 
-class Polynomial {
+class cDaThuc {
 private:
-    vector<double> coefficients;
-    string formatNumber(double num) const {
+    vector<double> heSo;
+    string Num(double num) const {
         if (floor(num) == num) {
             return to_string(int(num));
         }
-        
         ostringstream oss;
         oss << fixed << setprecision(10) << num;
         string str = oss.str();
-        
         str.erase(str.find_last_not_of('0') + 1, string::npos);
-        
         if (str.back() == '.') {
             str.pop_back();
         }
-        
         return str;
     }
 
 public:
-    Polynomial(int degree = 0) {
-        coefficients.resize(degree + 1, 0);
+    cDaThuc(int degree = 0) {
+        heSo.resize(degree + 1, 0);
     }
-
-    Polynomial(const vector<double>& coeffs) : coefficients(coeffs) {
+    cDaThuc(const vector<double>& coeffs) : heSo(coeffs) {
         removeTrailingZeros();
     }
-
-    Polynomial(initializer_list<double> coeffs) : coefficients(coeffs) {
+    cDaThuc(initializer_list<double> coeffs) : heSo(coeffs) {
         removeTrailingZeros();
     }
-
     void removeTrailingZeros() {
-        while (!coefficients.empty() && coefficients.back() == 0) {
-            coefficients.pop_back();
+        while (!heSo.empty() && heSo.back() == 0) {
+            heSo.pop_back();
         }
     }
-
     int degree() const {
-        return coefficients.empty() ? 0 : coefficients.size() - 1;
+        return heSo.empty() ? 0 : heSo.size() - 1;
     }
-
-    double evaluate(double x) const {
-        double result = 0.0;
-        for (size_t i = 0; i < coefficients.size(); ++i) {
-            result += coefficients[i] * pow(x, i);
+    double tinhGiaTri(double x) const {
+        double res = 0.0;
+        for (size_t i = 0; i < heSo.size(); ++i) {
+            res += heSo[i] * pow(x, i);
         }
-        return result;
+        return res;
     }
-
-    void input() {
+    void nhap() {
         int deg;
-        cout << "Enter the degree of the polynomial: ";
+        cout << "Nhap bac: ";
         cin >> deg;
         
-        coefficients.resize(deg + 1);
+        heSo.resize(deg + 1);
         
         for (int i = deg; i >= 0; --i) {
-            cout << "Enter coefficient for x^" << i << ": ";
-            cin >> coefficients[i];
+            cout << "Nhap he so " << i << ": ";
+            cin >> heSo[i];
         }
-        
         removeTrailingZeros();
     }
-
-    void output() const {
+    void xuat() const {
         cout << toString() << endl;
     }
-
-    Polynomial add(const Polynomial& other) const {
-        vector<double> result = coefficients;
-        result.resize(max(result.size(), other.coefficients.size()), 0);
+    cDaThuc tong(const cDaThuc& other) const {
+        vector<double> res = heSo;
+        res.resize(max(res.size(), other.heSo.size()), 0);
         
-        for (size_t i = 0; i < other.coefficients.size(); ++i) {
-            result[i] += other.coefficients[i];
+        for (size_t i = 0; i < other.heSo.size(); ++i) {
+            res[i] += other.heSo[i];
         }
         
-        Polynomial p(result);
+        cDaThuc p(res);
         return p;
     }
-
-    Polynomial subtract(const Polynomial& other) const {
-        vector<double> result = coefficients;
-        result.resize(max(result.size(), other.coefficients.size()), 0);
+    cDaThuc hieu(const cDaThuc& other) const {
+        vector<double> res = heSo;
+        res.resize(max(res.size(), other.heSo.size()), 0);
         
-        for (size_t i = 0; i < other.coefficients.size(); ++i) {
-            result[i] -= other.coefficients[i];
+        for (size_t i = 0; i < other.heSo.size(); ++i) {
+            res[i] -= other.heSo[i];
         }
-        
-        Polynomial p(result);
+        cDaThuc p(res);
         return p;
     }
-
     string toString() const {
-        if (coefficients.empty()) {
+        if (heSo.empty()) {
             return "0";
         }
-        
-        string result;
+        string res;
         bool firstTerm = true;
-        
-        for (int i = coefficients.size() - 1; i >= 0; --i) {
-            if (coefficients[i] == 0) continue;
+        for (int i = heSo.size() - 1; i >= 0; --i) {
+            if (heSo[i] == 0) continue;
             
             if (firstTerm) {
-                if (coefficients[i] < 0) {
-                    result += "-";
+                if (heSo[i] < 0) {
+                    res += "-";
                 }
                 firstTerm = false;
             } else {
-                result += (coefficients[i] < 0) ? " - " : " + ";
-            }
-            
-            double absCoeff = abs(coefficients[i]);
-            
+                res += (heSo[i] < 0) ? " - " : " + ";
+            }          
+            double absHeSo = abs(heSo[i]);
             if (i == 0) {
-                result += formatNumber(absCoeff);
+                res += Num(absHeSo);
             } else if (i == 1) {
-                if (absCoeff == 1) {
-                    result += "x";
+                if (absHeSo == 1) {
+                    res += "x";
                 } else {
-                    result += formatNumber(absCoeff) + "x";
+                    res += Num(absHeSo) + "x";
                 }
             } else {
-                if (absCoeff == 1) {
-                    result += "x^" + to_string(i);
+                if (absHeSo == 1) {
+                    res += "x^" + to_string(i);
                 } else {
-                    result += formatNumber(absCoeff) + "x^" + to_string(i);
+                    res += Num(absHeSo) + "x^" + to_string(i);
                 }
             }
         }
-        
-        return result;
+        return res;
     }
-
-    friend ostream& operator<<(ostream& os, const Polynomial& poly) {
+    friend ostream& operator<<(ostream& os, const cDaThuc& poly) {
         os << poly.toString();
         return os;
     }
 };
 
 int main() {
-    Polynomial p1(0);
-    cout << "Created polynomial with degree 0: " << p1 << endl;
-    
-    Polynomial p2({1, 5, 2, 0, 3});
-    cout << "Created polynomial: " << p2 << endl;
-    
+    cDaThuc p1(0);
+    cout << "cDaThuc voi mumu 0: " << p1 << endl;
+    cDaThuc p2({1, 5, 2, 0, 3});
+    cout << "cDaThuc bang constructor: " << p2 << endl;
     double x = 2.0;
-    cout << "P(" << x << ") = " << p2.evaluate(x) << endl;
-    
-    cout << "\nEnter a new polynomial:" << endl;
-    Polynomial p3;
-    p3.input();
-    
-    cout << "\nThe polynomial you entered: ";
-    p3.output();
-    
-    Polynomial sum = p2.add(p3);
-    cout << "\nSum of polynomials: " << sum << endl;
-    
-    Polynomial diff = p2.subtract(p3);
-    cout << "Difference of polynomials: " << diff << endl;
-    
+    cout << "P(" << x << ") = " << p2.tinhGiaTri(x) << endl;
+    cout << "Nhap vao cDaThuc:" << endl;
+    cDaThuc p3;
+    p3.nhap();
+    cout << endl;
+    cout << "cDaThuc da nhap vao: " << endl;
+    p3.xuat();
+    cDaThuc tong = p2.tong(p3);
+    cout << "Tong: " << tong << endl;
+    cDaThuc hieu = p2.hieu(p3);
+    cout << "Hieu: " << hieu << endl;
     return 0;
 }
