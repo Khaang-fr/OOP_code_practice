@@ -9,24 +9,18 @@ using namespace std;
 
 class Polynomial {
 private:
-    vector<double> coefficients; // Index 0 is constant term, 1 is x, 2 is x^2, etc.
-
-    // Format number to remove trailing zeros
+    vector<double> coefficients;
     string formatNumber(double num) const {
-        // Handle integer values
         if (floor(num) == num) {
             return to_string(int(num));
         }
         
-        // Format double with precision
         ostringstream oss;
         oss << fixed << setprecision(10) << num;
         string str = oss.str();
         
-        // Remove trailing zeros
         str.erase(str.find_last_not_of('0') + 1, string::npos);
         
-        // Remove trailing decimal point if necessary
         if (str.back() == '.') {
             str.pop_back();
         }
@@ -35,34 +29,28 @@ private:
     }
 
 public:
-    // Create a polynomial with specified degree or 0 degree
     Polynomial(int degree = 0) {
         coefficients.resize(degree + 1, 0);
     }
 
-    // Constructor with coefficient list
     Polynomial(const vector<double>& coeffs) : coefficients(coeffs) {
         removeTrailingZeros();
     }
 
-    // Constructor with initializer list
     Polynomial(initializer_list<double> coeffs) : coefficients(coeffs) {
         removeTrailingZeros();
     }
 
-    // Remove trailing zeros
     void removeTrailingZeros() {
         while (!coefficients.empty() && coefficients.back() == 0) {
             coefficients.pop_back();
         }
     }
 
-    // Get degree of polynomial
     int degree() const {
         return coefficients.empty() ? 0 : coefficients.size() - 1;
     }
 
-    // Evaluate polynomial at value x
     double evaluate(double x) const {
         double result = 0.0;
         for (size_t i = 0; i < coefficients.size(); ++i) {
@@ -71,7 +59,6 @@ public:
         return result;
     }
 
-    // Input a polynomial
     void input() {
         int deg;
         cout << "Enter the degree of the polynomial: ";
@@ -87,12 +74,10 @@ public:
         removeTrailingZeros();
     }
 
-    // Output a polynomial
     void output() const {
         cout << toString() << endl;
     }
 
-    // Addition of polynomials
     Polynomial add(const Polynomial& other) const {
         vector<double> result = coefficients;
         result.resize(max(result.size(), other.coefficients.size()), 0);
@@ -105,7 +90,6 @@ public:
         return p;
     }
 
-    // Subtraction of polynomials
     Polynomial subtract(const Polynomial& other) const {
         vector<double> result = coefficients;
         result.resize(max(result.size(), other.coefficients.size()), 0);
@@ -118,7 +102,6 @@ public:
         return p;
     }
 
-    // String representation of the polynomial
     string toString() const {
         if (coefficients.empty()) {
             return "0";
@@ -130,7 +113,6 @@ public:
         for (int i = coefficients.size() - 1; i >= 0; --i) {
             if (coefficients[i] == 0) continue;
             
-            // Handle sign
             if (firstTerm) {
                 if (coefficients[i] < 0) {
                     result += "-";
@@ -142,19 +124,15 @@ public:
             
             double absCoeff = abs(coefficients[i]);
             
-            // Handle coefficient and variable
             if (i == 0) {
-                // Constant term
                 result += formatNumber(absCoeff);
             } else if (i == 1) {
-                // x term
                 if (absCoeff == 1) {
                     result += "x";
                 } else {
                     result += formatNumber(absCoeff) + "x";
                 }
             } else {
-                // Higher power terms
                 if (absCoeff == 1) {
                     result += "x^" + to_string(i);
                 } else {
@@ -166,7 +144,6 @@ public:
         return result;
     }
 
-    // Friend function for output stream
     friend ostream& operator<<(ostream& os, const Polynomial& poly) {
         os << poly.toString();
         return os;
