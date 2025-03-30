@@ -64,6 +64,9 @@ public:
     int getSoLuong() const {
         return soLuong;
     }
+    string getNXB() const {
+        return NXB;
+    }
     ~Sach() {
         cout << "bye!" << endl;
     }
@@ -74,6 +77,7 @@ void Sach::Nhap() {
     cout << "Nhap ngay nhap: "; cin >> this->ngayNhap.ngay >> this->ngayNhap.thang >> this->ngayNhap.nam;
     cout << "Nhap don gia cuon sach: "; cin >> this->DonGia;
     cout << "Nhap so luong cuon sach: "; cin >> this->soLuong;
+    cin.ignore();
     cout << "Nhap nha xuat ban cuon sach: "; getline(cin, this->NXB);
 }
 
@@ -128,7 +132,8 @@ public:
     void nhap();
     void xuat();
     double tinhThanhTien() {
-        return this->getDonGia() * this->getSoLuong() + this->thue;
+        double tien = this->getDonGia() * this->getSoLuong() + this->thue;
+        return tien;
     }
     double getThanhTien() {
         return thanhTien;
@@ -137,8 +142,8 @@ public:
 
 void sachThamKhao::nhap() {
     Sach::Nhap();
+    cout << "Nhap so thue: "; cin >> this->thue;
     cin.ignore();
-    cout << "Nhap so thue: "; cin >> this->thue; cout << endl;
     this->thanhTien = sachThamKhao::tinhThanhTien();
 }
 
@@ -164,10 +169,10 @@ public:
     void nhapDanhSach(sachGiaoKhoa sgk[], int& h, sachThamKhao stk[], int& k) {
         do {
             cout << "Nhap so sach giao khoa: "; cin >> h; cout << endl;
-            if (h < 1 || h > 10) {
-                cout << "Vui long nhap so tu 1 den 10." << endl;
+            if (h < 0 || h > 10) {
+                cout << "Vui long nhap so tu 0 den 10." << endl;
             }
-        } while (h < 1 || h > 10);
+        } while (h < 0 || h > 10);
         cin.ignore();
         for (int i = 0; i < h; i++) {
             sgk[i].sachGiaoKhoa::nhap();
@@ -175,10 +180,10 @@ public:
 
         do {
             cout << "Nhap so sach tham khao: "; cin >> k; cout << endl;
-            if (k < 1 || k > 10) {
-                cout << "Vui long nhap so tu 1 den 10." << endl;
+            if (k < 0 || k > 10) {
+                cout << "Vui long nhap so tu 0 den 10." << endl;
             }
-        } while (k < 1 || k > 10);
+        } while (k < 0 || k > 10);
         cin.ignore();
         for (int i = 0; i < k; i++) {
             stk[i].sachThamKhao::nhap();
@@ -210,16 +215,35 @@ public:
         }
         cout << "Trung binh cong don gia cac sach tham khao la: " << sum << endl;
     }
+    void inSachTheoNXB(sachGiaoKhoa sgk[], int h, sachThamKhao stk[], int k, const string& nxb) {
+        cout << "Danh sach sach thuoc NXB \"" << nxb << "\":" << endl;
+        bool found = false;
+        for (int i = 0; i < h; i++) {
+            if (sgk[i].getNXB() == nxb) {
+                sgk[i].xuat();
+                found = true;
+            }
+        }
+        for (int i = 0; i < k; i++) {
+            if (stk[i].getNXB() == nxb) {
+                stk[i].xuat();
+                found = true;
+            }
+        }
+        if (!found) {
+            cout << "Khong co sach nao thuoc NXB \"" << nxb << "\"." << endl;
+        }
+    }
     void Menu();
 };
 
 void QuanLy::Menu() {
     do {
-        cout << "\n===== MENU =====" << endl;
         cout << "1. Nhap danh sach sach" << endl;
         cout << "2. Xuat danh sach sach" << endl;
         cout << "3. Tinh tong thanh tien" << endl;
         cout << "4. Tinh trung binh cong don gia cac sach tham khao" << endl;
+        cout << "5. In sach theo NXB" << endl;
         cout << "0. Thoat" << endl;
         cout << "Nhap lua chon cua ban: ";
         cin >> check;
@@ -239,6 +263,13 @@ void QuanLy::Menu() {
             }
             case 4: {
                 trungBinhCongSTK(tk, k);
+                break;
+            }
+            case 5: {
+                string nxb;
+                cout << "Nhap ten NXB: ";
+                getline(cin, nxb);
+                inSachTheoNXB(gk, h, tk, k, nxb);
                 break;
             }
             case 0: {
