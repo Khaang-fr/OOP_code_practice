@@ -1,3 +1,5 @@
+#include "cDaGiac.h"
+#include "Diem.h"
 #include <string>
 #include <iostream>
 #include <math.h>
