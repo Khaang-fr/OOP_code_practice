@@ -58,7 +58,6 @@ private:
     string soTuyen;
     int soKM;
 public:
-
     void Nhap();
     void Xuat();
 };
@@ -100,18 +99,17 @@ void ExternalVehicle::Xuat() {
 
 class QuanLy {
 private:
-    InternalVehicle inV[10];
-    ExternalVehicle exV[10];
+    Vehicle *V[20];
+    int loaiXe;
     int k, h;
-    int check;
+    int n;
 public:
     QuanLy() { 
         this->k = 0;
         this->h = 0;
-        this->check = 0;
+        this->n = 0;
     }
     double TongDoanhThuXeNoiThanh(InternalVehicle p[], int n) {
-
         double tong = 0;
 
         for (int i = 0; i < n; i++)
@@ -129,32 +127,33 @@ public:
         }
         return tong;
     }
-    void NhapDanhSachNoiTHanh(InternalVehicle in[], int& h) {
-        do {
-            cout << "Nhap so chuyen xe noi thanh: "; cin >> h;
-            cin.ignore();
-        } while (h < 1 || h > 9);
-        for (int i = 0; i < h; i++) {
-            in[i].Nhap();
-        }
-    }
 
-    void XuatDanhSachNoiTHanh(InternalVehicle in[], int h) {
+    void XuatDanhSachNoiThanh(InternalVehicle in[], int h) {
         cout << "Danh sach xe noi thanh:" << endl;
         for (int i = 0; i < h; i++) {
-            cout << "Chuyen xe thu " << i + 1 << ":" << endl;
+            cout << "Chuyen xe thu " <<      i + 1 << ":" << endl;
             in[i].Xuat();
             cout << "------------------------" << endl;
         }
     }
 
-    void NhapDanhSachNgoaiThanh(ExternalVehicle ex[], int& k) {
+    void NhapGopHaiDanhSach(Vehicle *v[10], int n) {
         do {
-            cout << "Nhap so chuyen xe ngoai thanh: "; cin >> k;
+            cout << "Nhap so chuyen xe: "; cin >> n;
+        } while (n < 1 || n > 9);
+        for (int i = 0; i < n; i++) {
+            cout << "Bac nhap loai xe nao? 1: Xe noi thanh, 2: Xe ngoai thanh: "; cin >> loaiXe;
             cin.ignore();
-        } while (k < 1 || k > 9);
-        for (int i = 0; i < k; i++) {
-            ex[i].Nhap();
+            if (loaiXe == 1) {
+                v[i] = new InternalVehicle();
+            } else if (loaiXe == 2) {
+                v[i] = new ExternalVehicle();
+            } else {
+                cout << "Khong co loai xe nay!" << endl;
+                i--;
+                continue;
+            }
+            v[i]->Nhap();
         }
     }
 
@@ -169,56 +168,44 @@ public:
 
     void Menu() {
         do {
-            cout << "1. Nhap danh sach xe noi thanh" << endl;
-            cout << "2. Nhap danh sach xe ngoai thanh" << endl;
-            cout << "3. Xuat danh sach xe noi thanh" << endl;
-            cout << "4. Xuat danh sach xe ngoai thanh" << endl;
-            cout << "5. Tinh tong doanh thu xe noi thanh" << endl;
-            cout << "6. Tinh tong doanh thu xe ngoai thanh" << endl;
-            cout << "7. Tinh tong doanh thu tat ca loai xe" << endl;
-            cout << "8. Thoat" << endl;
-            cout << "Moi ban lua chon: "; cin >> check;
+            cout << "1. Nhap danh sach xe" << endl;
+            cout << "2. Xuat danh sach xe noi thanh" << endl;
+            cout << "3. Xuat danh sach xe ngoai thanh" << endl;
+            cout << "4. Tinh tong doanh thu xe noi thanh" << endl;
+            cout << "5. Tinh tong doanh thu xe ngoai thanh" << endl;
+            cout << "6. Thoat" << endl;
+            cout << "Moi ban lua chon: "; cin >> n;
             cin.ignore();
 
-            switch (check) {
+            switch (n) {
             case 1: 
-                NhapDanhSachNoiTHanh(inV, h); 
+                NhapGopHaiDanhSach(V, n); 
                 break;
             case 2: 
-                NhapDanhSachNgoaiThanh(exV, k); 
+                XuatDanhSachNoiThanh(reinterpret_cast<InternalVehicle*>(V), h); 
                 break;
             case 3: 
-                XuatDanhSachNoiTHanh(inV, h); 
+                XuatDanhSachNgoaiThanh(reinterpret_cast<ExternalVehicle*>(V), k); 
                 break;
-            case 4: 
-                XuatDanhSachNgoaiThanh(exV, k); 
-                break;
-            case 5: {
-                double dtNoiThanh = TongDoanhThuXeNoiThanh(inV, h);
+            case 4: {
+                double dtNoiThanh = TongDoanhThuXeNoiThanh(reinterpret_cast<InternalVehicle*>(V), h);
                 cout << "Tong doanh thu xe noi thanh: " << dtNoiThanh << endl;
                 }
                 break;
-            case 6: {
-                double dtNgoaiThanh = TongDoanhThuXeNgoaiThanh(exV, k);
+            case 5: {
+                double dtNgoaiThanh = TongDoanhThuXeNgoaiThanh(reinterpret_cast<ExternalVehicle*>(V), k);
                 cout << "Tong doanh thu xe ngoai thanh: " << dtNgoaiThanh << endl;
                 }
                 break;
-            case 7: {
-                double dt =  TongDoanhThuXeNoiThanh(inV, h) + TongDoanhThuXeNgoaiThanh(exV, k);
-                cout << "Tong doanh thu tat ca loai xe: " << dt << endl;
-                }
-                break;
-            case 8: 
+            case 6: 
                 cout << "Thoat chuong trinh." << endl;
                 break;
             default: 
-                cout << "Vui long nhap so tu 1 den 8." << endl;
+                cout << "Vui long nhap so tu 1 den 6." << endl;
                 break;
             }
-        } while (check != 8);
+        } while (n != 6);
     }
-
-
 };
 
 int main()
