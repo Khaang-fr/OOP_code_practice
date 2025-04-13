@@ -1,15 +1,15 @@
-#pragna once
+#pragma once
+#include <string>
+using namespace std;
 class Diem
 {
 protected: 
-        double dx, dy;
+	double dx, dy;
 public:
 	Diem();
 	Diem(double x, double y);
 	~Diem();
 	void Nhap();
-    double getDx() const { return dx; }
-    double getDy() const { return dy; }
 	void Xuat() const;
 	void TinhTien(double x, double y);
 	void Quay(int goc);
