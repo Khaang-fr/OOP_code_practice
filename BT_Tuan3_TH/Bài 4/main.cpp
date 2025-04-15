@@ -3,6 +3,7 @@
 #include <math.h>
 #include <string>
 #include <iomanip>
+#include "cArray.h"
 #include <cmath>
 using namespace std;
 
