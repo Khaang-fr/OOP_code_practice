@@ -4,6 +4,7 @@
 #include <iomanip>
 #include <cmath>
 #include "cDSPhanSo.h"
+#include "cPhanSO.h"
 using namespace std;
 
 cDSPhanSo::cDSPhanSo() {
