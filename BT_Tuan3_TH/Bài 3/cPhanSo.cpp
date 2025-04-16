@@ -26,7 +26,8 @@ void cPhanSo::Nhap() {
 void cPhanSo::Xuat() {
     if (mau == 1) {
         cout << tu;
-    } else {
+    }
+    else {
         cout << tu << "/" << mau;
     }
 }
@@ -51,19 +52,19 @@ double cPhanSo::GiaTri() const {
     return static_cast<double>(tu) / mau;
 }
 
-bool cPhanSo::operator>(const cPhanSo &other) const {
+bool cPhanSo::operator>(const cPhanSo& other) const {
     return tu * other.mau > other.tu * mau;
 }
 
-bool cPhanSo::operator<(const cPhanSo &other) const {
+bool cPhanSo::operator<(const cPhanSo& other) const {
     return tu * other.mau < other.tu * mau;
 }
 
-bool cPhanSo::operator==(const cPhanSo &other) const {
+bool cPhanSo::operator==(const cPhanSo& other) const {
     return tu * other.mau == other.tu * mau;
 }
 
-cPhanSo cPhanSo::operator+(const cPhanSo &other) const {
+cPhanSo cPhanSo::operator+(const cPhanSo& other) const {
     int newTu = tu * other.mau + other.tu * mau;
     int newMau = mau * other.mau;
     return cPhanSo(newTu, newMau);
