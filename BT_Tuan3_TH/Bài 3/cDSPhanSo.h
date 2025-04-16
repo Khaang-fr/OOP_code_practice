@@ -1,17 +1,15 @@
 #pragma once
+#include "cPhanSo.h"
 class cDSPhanSo {
     private:
         int n;
-        int *tu;
-        int *mau;
+        cPhanSo *arr;
     public:
         cDSPhanSo();
         cDSPhanSo(int n);
         ~cDSPhanSo();
         void Nhap();
         void Xuat();
-        void Xuat(int t, int m);
-        void RutGon(int &a, int &b);
         void Tong();
         void Max();
         void Min();
