@@ -4,7 +4,7 @@
 #include <iomanip>
 #include <cmath>
 #include "cDSPhanSo.h"
-#include "cPhanSO.h"
+#include "cPhanSo.h"
 using namespace std;
 
 cDSPhanSo::cDSPhanSo() {
@@ -84,25 +84,20 @@ void cDSPhanSo::TuLaSoNguyenToLonNhat() {
         cout << "Phan so co tu la so nguyen to lon nhat: ";
         arr[record].Xuat();
         cout << endl;
-    } else {
+    }
+    else {
         cout << "Khong co phan so nao co tu la so nguyen to." << endl;
     }
 }
 
 void cDSPhanSo::SapXepTangDan() {
-    sort(arr, arr + n, [](const cPhanSo &a, const cPhanSo &b) { return a < b; });
+    sort(arr, arr + n, [](const cPhanSo& a, const cPhanSo& b) { return a < b; });
     cout << "Danh sach phan so sau khi sap xep tang dan: " << endl;
     Xuat();
 }
 
 void cDSPhanSo::SapXepGiamDan() {
-    sort(arr, arr + n, [](const cPhanSo &a, const cPhanSo &b) { return a > b; });
-    cout << "Danh sach phan so sau khi sap xep giam dan: " << endl;
-    Xuat();
-}
-
-void cDSPhanSo::SapXepGiamDan() {
-    mergeSort(tu, mau, 0, n - 1);
+    sort(arr, arr + n, [](const cPhanSo& a, const cPhanSo& b) { return a > b; });
     cout << "Danh sach phan so sau khi sap xep giam dan: " << endl;
     Xuat();
 }
