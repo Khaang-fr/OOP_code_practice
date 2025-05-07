@@ -156,8 +156,8 @@ void sachThamKhao::xuat() {
 class QuanLy 
 {
 private:
-    Sach** danhSach; // Double pointer to manage Sach objects
-    int soLuong;     // Total number of Sach objects
+    Sach** danhSach;
+    int soLuong;
 public:
     QuanLy() {
         this->danhSach = nullptr;
