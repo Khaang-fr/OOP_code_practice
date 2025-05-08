@@ -26,3 +26,9 @@ SoPhuc SoPhuc::operator/(SoPhuc b) {
     result.ao = (this->ao * b.thuc - this->thuc * b.ao) / denominator;
     return result;
 }
+bool SoPhuc::operator==(const SoPhuc& b) const {
+    return this->thuc == b.thuc && this->ao == b.ao;
+}
+bool SoPhuc::operator!=(const SoPhuc& b) const {
+    return !(*this == b);
+}
