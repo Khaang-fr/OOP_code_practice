@@ -1,4 +1,5 @@
 #pragma once
+#include <string>
 class ExternalVehicle: public Vehicle {
 private:
     string noiDen;
