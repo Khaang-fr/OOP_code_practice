@@ -22,4 +22,6 @@ public:
     SoPhuc operator-(SoPhuc b);
     SoPhuc operator*(SoPhuc b);
     SoPhuc operator/(SoPhuc b);
+    bool operator==(const SoPhuc& b) const;
+    bool operator!=(const SoPhuc& b) const;
 };
