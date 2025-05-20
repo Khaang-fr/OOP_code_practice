@@ -2,6 +2,11 @@
 #include <iostream>
 #include <iomanip>
 using namespace std;
+bool isRealDate(int d, int m, int y) {
+    if (y < 0 || m < 1 || m > 12 || d < 1) return false;
+    const int daysInMonth[] = {31, 28 + (y % 4 == 0 && (y % 100 != 0 || y % 400 == 0)), 31, 30, 31, 30, 31, 31, 30, 31, 30, 31};
+    return d <= daysInMonth[m - 1];
+}
 class cDate {
     private:
         int ngay, thang, nam;
