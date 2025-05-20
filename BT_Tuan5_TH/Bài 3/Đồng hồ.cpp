@@ -108,9 +108,9 @@ int main() {
     cTime t;
     while (true) {
         t.setCurrentTime();
-        gotoxy(70, 0); // Góc trên bên phải (sửa số 70 tùy theo kích thước màn hình)
+        gotoxy(70, 0);
         cout << t << flush;
-        Sleep(1000); // Chờ 1 giây
+        Sleep(1000);
     }
     return 0;
 }
