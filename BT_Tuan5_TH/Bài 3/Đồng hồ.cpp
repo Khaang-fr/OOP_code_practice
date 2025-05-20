@@ -4,7 +4,7 @@
 using namespace std;
 
 //cTime.h
-//pragma once
+//#pragma once
 //#include <iostream>
 //#include <iomanip>
 //#include <windows.h>
