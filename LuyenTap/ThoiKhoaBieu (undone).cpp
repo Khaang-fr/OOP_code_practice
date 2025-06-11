@@ -94,6 +94,14 @@ public:
         cout << "Thoi gian hoc: " << thoiGianHoc << endl;
         cout << "Day la mon hoc " << (buoiSang ? "buoi sang" : "buoi chieu") << endl;
     }
+
+    virtual string getThoiGianBatDau() const {
+        return thoiGianBatDau;
+    }
+    
+    virtual string getMaMonHoc() const {
+        return maMonHoc;
+    }
 };
 
 class HocTrenTruong : public MonHoc
@@ -166,6 +174,18 @@ public:
             delete dsMonHoc[i];
         }
         delete[] dsMonHoc;
+    }
+
+    void sortMonHoc() {
+        for (int i = 1; i < soMonHoc; ++i) {
+            MonHoc* key = dsMonHoc[i];
+            int j = i - 1;
+            while (j >= 0 && timeToMinutes(dsMonHoc[j]->getThoiGianBatDau()) > timeToMinutes(key->getThoiGianBatDau())) {
+                dsMonHoc[j + 1] = dsMonHoc[j];
+                --j;
+            }
+            dsMonHoc[j + 1] = key;
+        }
     }
 
     void nhap() {
