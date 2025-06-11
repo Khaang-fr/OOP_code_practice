@@ -213,6 +213,7 @@ public:
             }
             dsMonHoc[i]->nhap();
         }
+        sortMonHoc();
     }
 
     void xuat() const {
